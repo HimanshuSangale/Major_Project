@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Page</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-container {
+            text-align: center;
+        }
+
+        .search-box {
+            width: 500px;
+            height: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .search-button {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            width: 500px;
+            height: 20px;
+            padding: 10px;
+            font-size: 16px;
+            text-align: left;
+            border-style: solid;
+        }
+
+        li{
+            margin: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="search-container">
+        <input type="text" id="query" class="search-box" placeholder="Enter your query">
+        <ul id="suggestion" class="suggestion">
+            <li>heeeeeeeeeeeeeeeeeeee</li>
+            <li>heeeeeeeeeeeeeeeeeeee</li>
+            <li>heeeeeeeeeeeeeeeeeeee</li>
+        </ul>
+        <br>
+        <!-- <button class="search-button">Search</button> -->
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#query').on('input', function () {
+                var query = $(this).val();
+                var words = query.split(" ");
+                var wordCount = words.length;
+                console.log(wordCount);
+                console.log(words);
+                if (wordCount < 3) {
+                    // Clear the processed query and keywords
+                    $('#suggestion').empty();
+                    return;
+                }
+                else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/process_query',
+                        data: { query: query },
+                        success: function (response) {
+
+                            var suggestions = response.keywords;
+                            var suggestionHtml = '';
+                            for (var i = 0; i < suggestions.length; i++) {
+                                suggestionHtml += '<li>' + suggestions[i] + '</li>';
+                            }
+                            $('#suggestion').html(suggestionHtml);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

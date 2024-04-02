@@ -1,0 +1,7 @@
+node_modules/
+.vscode/
+Major Project/
+search-bar/node_modules/
+server/__pycache__/
+server/env/
+server/myenv/
